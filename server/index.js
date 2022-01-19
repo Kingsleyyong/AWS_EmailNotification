@@ -1,19 +1,42 @@
 import express from 'express';
 // import AWS from 'aws-sdk';
-import EmailUsage from './emailUsage.js'
+import EmailUsage from './emailUsage.js';
 import dotenv from 'dotenv';
+import cors from 'cors';
+import bodyparser from 'body-parser';
+import dataAddingFirestore from './dbseed.js';
+
 dotenv.config()
-
 const app = express();
+app.use(cors())
+const port = 8000; 
+app.use(bodyparser.json({ limit: '50mb' }));
 
-app.get('/', (req, res) => {
-   const name = req.query.name, recipientEmail = req.query.rEmail;
+// app.get('/', async (req, res) => {
+//    // const name = req.query.name, recipientEmail = req.query.rEmail;
 
-   console.log("Name = " + name);
-   console.log("Recipient Email = " + recipientEmail);
+//    // console.log("Name = " + name);
+//    // console.log("Recipient Email = " + recipientEmail);
 
-   EmailUsage.sendEmail(recipientEmail, name);
+//    // EmailUsage.sendEmail(recipientEmail, name);
 
+//    try {
+//       console.log(req.body)
+//       res.status(200).json(req.body)
+
+//    } catch (error) {
+//       res.status(404).json({ message: error.message });
+//    }
+// });
+
+app.post('/', async (req, res) => {
+   try {
+      const data = req.body;
+      dataAddingFirestore(data);
+      
+   } catch (error) {
+      console.log(error)
+   }
 });
 
-app.listen(3000, () => console.log('SMS Service Listening on PORT 3000'));
+app.listen(port, () => console.log(`Server Running on PORT ${port}`));

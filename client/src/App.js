@@ -1,22 +1,41 @@
-import { Box, Card, TextField, Button } from '@mui/material'
-import { useRef } from 'react'
+import { Alert, FormControlLabel, Card, TextField, Button, Box, Checkbox } from '@mui/material'
+import { useRef, useState } from 'react'
+import postRequest from './api';
 
 function App() {
+
+  const [dailyNews, setDailyNews] = useState(true);
+  const [accNotification, setAccNotification] = useState(true);
+  // const [status, setStatus] = useState(null);
+  
 
   let email = useRef(), name = useRef();
 
   const handleSubscribeButton = () => {
-      console.log(email.current.value, name.current.value)
+    postRequest(email.current.value, name.current.value, dailyNews, accNotification)
+    
   }
+
+  // let alertBar = (status) => {
+  //   if (status === true)
+  //     return <Alert severity="success">Success</Alert>;
+  //   else if (status === false)
+  //     return <Alert severity="error">This is an error alert — check it out!</Alert>;
+  //   else
+  //     return null;
+  // }
 
   return (
     <div style={{ 
       margin: '-1vw',
       display: 'flex',
+      flexDirection: 'column',
       justifyContent: 'center',
       alignItems: 'center',
       minHeight: '100vh'
     }}>
+      {/* {alertBar(status)} */}
+
       <Card style={{
         textAlign: 'center',
         backgroundColor: 'lightblue',
@@ -46,6 +65,31 @@ function App() {
             id='name'
             inputRef={name}
             label='Name'
+          />
+
+          
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={dailyNews}
+                onChange={() => {
+                  setDailyNews(!dailyNews)
+                }}
+              />
+            }
+            label="Daily News"
+          />
+
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={accNotification}
+                onChange={() => {
+                  setAccNotification(!accNotification)
+                }}
+              />
+            }
+            label="Account Notifications"
           />
 
           <Button
