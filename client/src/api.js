@@ -5,7 +5,7 @@ let postRequest = (email, name, dailyNews, accNotification) => {
 
    let data = {
       email: email,
-      eame: name,
+      name: name,
       subcribeTopics: {
          dailyNews: dailyNews,
          accountNotification: accNotification

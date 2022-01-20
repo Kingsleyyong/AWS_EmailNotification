@@ -1,10 +1,10 @@
 import express from 'express';
 // import AWS from 'aws-sdk';
-import EmailUsage from './emailUsage.js';
+import EmailUsage from './Email/emailUsage.js';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import bodyparser from 'body-parser';
-import dataAddingFirestore from './dbseed.js';
+import dataAddingFirestore from './Database/dbseed.js';
 
 dotenv.config()
 const app = express();
@@ -33,7 +33,7 @@ app.post('/', async (req, res) => {
    try {
       const data = req.body;
       dataAddingFirestore(data);
-      
+      EmailUsage.welcomeEmail(data.email, data.name);
    } catch (error) {
       console.log(error)
    }
